@@ -43,6 +43,9 @@ body{
       display: flex;
       flex-direction: column;
       gap: .5em;
+      #roundExplanation::first-letter{
+        text-transform: capitalize;
+      }
     }
     .battleground{
       display: flex;
