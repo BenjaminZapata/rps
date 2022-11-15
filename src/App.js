@@ -2,23 +2,34 @@ import { useEffect, useState } from 'react';
 import './App.scss';
 
 function App() {
+  const [ showModal, setShowModal ] = useState(false)
   const [ userScore, setUserScore ] = useState(0)
   const [ computerScore, setComputerScore ] = useState(0)
-  let $roundResult, $roundExplanation, $playerbox, $computerbox, $modal, $modalAlert;
+  let $roundResult, $roundExplanation, $playerbox, $computerbox, $modalAlert;
   
   useEffect(() => {
     $roundResult = document.getElementById('roundResult')
     $roundExplanation = document.getElementById('roundExplanation')
     $playerbox = document.getElementById("playerbox")
     $computerbox = document.getElementById('computerbox')
-    $modal = document.getElementById('modal');
     $modalAlert = document.getElementById('modalAlert');
   })
-  const checkScore = () => {
-    if (userScore === 3){
-      
-    } else if (computerScore === 3){
-        
+  const restartGame = () => {
+    setUserScore(0)
+    setComputerScore(0)
+    $roundResult.innerText = 'Bienvenido';
+    $roundExplanation.innerText = 'Selecciona piedra, papel o tijeras para comenzar'
+    $computerbox.innerText = '❔';
+    $playerbox.innerText = '❔';
+    setShowModal(false)
+  }
+  const finishGame = (winner) => {
+    if (winner === 'user'){
+      setShowModal(true)
+      $modalAlert.innerText = '¡Ganaste!';
+    } else if (winner === 'computer'){
+      setShowModal(true)
+      $modalAlert.innerText = '¡Perdiste!';
     }
   }
   const handleBox = (player, move) => {
@@ -37,31 +48,32 @@ function App() {
       $roundResult.innerText = '¡Es un empate!';
       $roundExplanation.innerText = `${userMove} empata con ${computerMove}`;
     } else if ((userMove === 'piedra' && computerMove === 'tijeras') || (userMove === 'papel' && computerMove === 'piedra') || (userMove === 'tijeras' && computerMove === 'papel')){
+      setUserScore(userScore + 1);
       $roundResult.innerText = '¡Ganaste!';
       $roundExplanation.innerText = `${userMove} le gana a ${computerMove}`;
-      setUserScore(userScore + 1);
+      if (userScore === 2){
+        finishGame('user')
+      }
     } else if ((computerMove === 'piedra' && userMove === 'tijeras') || (computerMove === 'papel' && userMove === 'piedra') || (computerMove === 'tijeras' && userMove === 'papel')){
+      setComputerScore(computerScore + 1);
       $roundResult.innerText = '¡Perdiste!';
       $roundExplanation.innerText = `${computerMove} le gana a ${userMove}`;
-      setComputerScore(computerScore + 1);
+      if (computerScore === 2){
+        finishGame('computer')
+      }
     }
-    checkScore()
   }
   const handleComputerTurn = () =>{
     const moves = ['piedra', 'papel', 'tijeras']
     return moves[Math.floor(Math.random() * 3)]
-  }
-
-  const handleModal = (message) => {
-    $modalAlert.innerText = message;
   }
   
   return(
     <>
     <h1>Piedra, papel o tijeras</h1>
     <header>
-      <h2 id='roundResult'>Resultado de la ronda</h2>
-      <h3 id='roundExplanation'>Explicacion de la ronda</h3>
+      <h2 id='roundResult'>Bienvenido</h2>
+      <h3 id='roundExplanation'>Selecciona piedra, papel o tijeras para comenzar</h3>
     </header>
     <section className='battleground'>
       <article className='userbox'>
@@ -78,11 +90,11 @@ function App() {
       <button onClick={() => handleTurn('papel')}>✋</button>
       <button onClick={() => handleTurn('tijeras')}>✌️</button>
     </section>
-    <article id='modal'>
+    <article id='modal' className={showModal ? 'active' : 'inactive'}>
       <div>
         <h2 id='modalAlert'>¡Perdiste!</h2>
         <h4>{userScore} - {computerScore}</h4>
-        <button onClick={() => handleModal()}>Jugar de nuevo</button>
+        <button onClick={() => restartGame()}>Jugar de nuevo</button>
       </div>
     </article>
   </>

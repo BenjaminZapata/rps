@@ -30,17 +30,19 @@ body{
   #root{
     display: flex;
     flex-direction: column;
-    gap: 3em;
+    min-height: 100vh;
+    gap: 5em;
     h1{
       text-transform: uppercase;
       background-color: var(--dark-blue);
       width: 100vw;
       font-size: 2.5rem;
-      line-height: 2.5;
+      line-height: calc(5vw + 50px);
       letter-spacing: 0.05em;
       color: var(--gold);
     }
     header{
+      width: 100vw;
       display: flex;
       flex-direction: column;
       gap: .5em;
@@ -49,6 +51,7 @@ body{
       }
     }
     .battleground{
+      width: 100vw;
       display: flex;
       justify-content: center;
       gap: 1.5em;
@@ -68,14 +71,16 @@ body{
       }
     }
     .controls{
+      width: 100vw;
       display: flex;
       justify-content: center;
       gap: 2em;
+      justify-self: end;
       button{
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 5rem;
+        font-size: clamp(4rem, 5vw, 4.5rem);
         width: 150px;
         height: 150px;
         background-color: var(--dark-blue);
@@ -94,9 +99,6 @@ body{
     left: 0;
     right: 0;
     bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     div{
       background-color: var(--dark-blue-2);
       border-radius: 10px;
@@ -114,5 +116,13 @@ body{
         }
       }
     }
+  }
+  .active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .inactive{
+    display: none;
   }
 }
