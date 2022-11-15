@@ -11,11 +11,26 @@ function App() {
     $roundExplanation = document.getElementById('roundExplanation')
     $playerbox = document.getElementById("playerbox")
     $computerbox = document.getElementById('computerbox')
-  }, [])
+  })
+  const checkScore = () => {
+    if (userScore === 3){
 
+    } else if (computerScore === 3){
+
+    }
+  }
+  const handleBox = (player, move) => {
+    const moves = {piedra: '✊', papel: '✋', tijeras: '✌️'}
+    if (player === 'computer'){
+      $computerbox.innerText = moves[move];
+    } else if (player === 'user'){
+      $playerbox.innerText = moves[move];
+    }
+  }
   const handleTurn = (userMove) => {
     const computerMove = handleComputerTurn()
-    console.log('usuario: ' + userMove + ' computadora: ' + computerMove)
+    handleBox('computer', computerMove)
+    handleBox('user', userMove)
     if (userMove === computerMove){
       $roundResult.innerText = '¡Es un empate!';
       $roundExplanation.innerText = `${userMove} empata con ${computerMove}`;
@@ -28,8 +43,8 @@ function App() {
       $roundExplanation.innerText = `${computerMove} le gana a ${userMove}`;
       setComputerScore(computerScore + 1);
     }
+    checkScore()
   }
-
   const handleComputerTurn = () =>{
     const moves = ['piedra', 'papel', 'tijeras']
     return moves[Math.floor(Math.random() * 3)]
