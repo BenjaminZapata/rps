@@ -4,19 +4,21 @@ import './App.scss';
 function App() {
   const [ userScore, setUserScore ] = useState(0)
   const [ computerScore, setComputerScore ] = useState(0)
-  let $roundResult, $roundExplanation, $playerbox, $computerbox;
+  let $roundResult, $roundExplanation, $playerbox, $computerbox, $modal, $modalAlert;
   
   useEffect(() => {
     $roundResult = document.getElementById('roundResult')
     $roundExplanation = document.getElementById('roundExplanation')
     $playerbox = document.getElementById("playerbox")
     $computerbox = document.getElementById('computerbox')
+    $modal = document.getElementById('modal');
+    $modalAlert = document.getElementById('modalAlert');
   })
   const checkScore = () => {
     if (userScore === 3){
-
+      
     } else if (computerScore === 3){
-
+        
     }
   }
   const handleBox = (player, move) => {
@@ -49,6 +51,10 @@ function App() {
     const moves = ['piedra', 'papel', 'tijeras']
     return moves[Math.floor(Math.random() * 3)]
   }
+
+  const handleModal = (message) => {
+    $modalAlert.innerText = message;
+  }
   
   return(
     <>
@@ -72,6 +78,13 @@ function App() {
       <button onClick={() => handleTurn('papel')}>✋</button>
       <button onClick={() => handleTurn('tijeras')}>✌️</button>
     </section>
+    <article id='modal'>
+      <div>
+        <h2 id='modalAlert'>¡Perdiste!</h2>
+        <h4>{userScore} - {computerScore}</h4>
+        <button onClick={() => handleModal()}>Jugar de nuevo</button>
+      </div>
+    </article>
   </>
   );
 }
