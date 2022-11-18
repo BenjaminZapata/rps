@@ -5,6 +5,7 @@ function App() {
   const [ showModal, setShowModal ] = useState(false)
   const [ userScore, setUserScore ] = useState(0)
   const [ computerScore, setComputerScore ] = useState(0)
+  const [ playingRound, setPlayingRound ] = useState(false)
   let $roundResult, $roundExplanation, $playerbox, $computerbox, $modalAlert;
   
   useEffect(() => {
@@ -15,6 +16,7 @@ function App() {
     $modalAlert = document.getElementById('modalAlert');
   })
   const restartGame = () => {
+    setPlayingRound(false)
     setUserScore(0)
     setComputerScore(0)
     $roundResult.innerText = 'Bienvenido';
@@ -24,13 +26,16 @@ function App() {
     setShowModal(false)
   }
   const finishGame = (winner) => {
-    if (winner === 'user'){
-      setShowModal(true)
-      $modalAlert.innerText = '¡Ganaste!';
-    } else if (winner === 'computer'){
-      setShowModal(true)
-      $modalAlert.innerText = '¡Perdiste!';
-    }
+    setPlayingRound(true)
+    setTimeout(() => {
+      if (winner === 'user'){
+        setShowModal(true)
+        $modalAlert.innerText = '¡Ganaste!';
+      } else if (winner === 'computer'){
+        setShowModal(true)
+        $modalAlert.innerText = '¡Perdiste!';
+      }
+    }, 500);
   }
   const handleBox = (player, move) => {
     const moves = {piedra: '✊', papel: '✋', tijeras: '✌️'}
@@ -41,27 +46,39 @@ function App() {
     }
   }
   const handleTurn = (userMove) => {
+    setPlayingRound(true)
     const computerMove = handleComputerTurn()
-    handleBox('computer', computerMove)
-    handleBox('user', userMove)
-    if (userMove === computerMove){
-      $roundResult.innerText = '¡Es un empate!';
-      $roundExplanation.innerText = `${userMove} empata con ${computerMove}`;
-    } else if ((userMove === 'piedra' && computerMove === 'tijeras') || (userMove === 'papel' && computerMove === 'piedra') || (userMove === 'tijeras' && computerMove === 'papel')){
-      setUserScore(userScore + 1);
-      $roundResult.innerText = '¡Ganaste!';
-      $roundExplanation.innerText = `${userMove} le gana a ${computerMove}`;
-      if (userScore === 2){
-        finishGame('user')
+    handleBox('computer', 'piedra')
+    handleBox('user', 'piedra')
+    $computerbox.classList.add('active')
+    $playerbox.classList.add('active')
+    $roundResult.innerText = 'Piedra, papel o tijera'
+    $roundExplanation.innerText = 'Jugando el turno..'
+    setTimeout(() => {
+      setPlayingRound(false)
+      $computerbox.classList.remove('active')
+      $playerbox.classList.remove('active')
+      handleBox('computer', computerMove)
+      handleBox('user', userMove)
+      if (userMove === computerMove){
+        $roundResult.innerText = '¡Es un empate!';
+        $roundExplanation.innerText = `${userMove} empata con ${computerMove}`;
+      } else if ((userMove === 'piedra' && computerMove === 'tijeras') || (userMove === 'papel' && computerMove === 'piedra') || (userMove === 'tijeras' && computerMove === 'papel')){
+        setUserScore(userScore + 1);
+        $roundResult.innerText = '¡Ganaste!';
+        $roundExplanation.innerText = `${userMove} le gana a ${computerMove}`;
+        if (userScore === 2){
+          finishGame('user')
+        }
+      } else if ((computerMove === 'piedra' && userMove === 'tijeras') || (computerMove === 'papel' && userMove === 'piedra') || (computerMove === 'tijeras' && userMove === 'papel')){
+        setComputerScore(computerScore + 1);
+        $roundResult.innerText = '¡Perdiste!';
+        $roundExplanation.innerText = `${computerMove} le gana a ${userMove}`;
+        if (computerScore === 2){
+          finishGame('computer')
+        }
       }
-    } else if ((computerMove === 'piedra' && userMove === 'tijeras') || (computerMove === 'papel' && userMove === 'piedra') || (computerMove === 'tijeras' && userMove === 'papel')){
-      setComputerScore(computerScore + 1);
-      $roundResult.innerText = '¡Perdiste!';
-      $roundExplanation.innerText = `${computerMove} le gana a ${userMove}`;
-      if (computerScore === 2){
-        finishGame('computer')
-      }
-    }
+    }, 1500);
   }
   const handleComputerTurn = () =>{
     const moves = ['piedra', 'papel', 'tijeras']
@@ -86,9 +103,9 @@ function App() {
       </article>
     </section>
     <section className='controls'>
-      <button onClick={() => handleTurn('piedra')}>✊</button>
-      <button onClick={() => handleTurn('papel')}>✋</button>
-      <button onClick={() => handleTurn('tijeras')}>✌️</button>
+      <button onClick={playingRound ? () => {} : () => handleTurn('piedra')}>✊</button>
+      <button onClick={playingRound ? () => {} : () => handleTurn('papel')}>✋</button>
+      <button onClick={playingRound ? () => {} : () => handleTurn('tijeras')}>✌️</button>
     </section>
     <article id='modal' className={showModal ? 'active' : 'inactive'}>
       <div>

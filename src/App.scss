@@ -13,9 +13,33 @@
 :root{
   --white: #fcfcfc;
   --gold: #facf40;
-  --dark-blue: #293751;
-  --dark-blue-1: #3e4a67;
-  --dark-blue-2: #203150;
+  --dark-blue: #243856;
+  --dark-blue-1: #2A4265;
+  --dark-blue-2: #304B73;
+}
+
+@keyframes shakeAnimation{
+  0% {
+    transform: rotate(-15deg);
+  }
+  17%{
+    transform: rotate(-65deg);
+  }
+  34%{
+    transform: rotate(-15deg);
+  }
+  51%{
+    transform: rotate(-65deg);
+  }
+  68%{
+    transform: rotate(-15deg);
+  }
+  85%{
+    transform: rotate(-65deg);
+  }
+  100%{
+    transform: rotate(-15deg);
+  }
 }
 
 body{
@@ -67,6 +91,9 @@ body{
         p{
           font-size: 1.2rem;
           font-weight: 600;
+        }
+        .active{
+          animation: shakeAnimation 1.5s linear infinite alternate;
         }
       }
     }
