@@ -60,7 +60,7 @@ body{
       text-transform: uppercase;
       background-color: var(--dark-blue);
       width: 100vw;
-      font-size: 2.5rem;
+      font-size: clamp(1.5rem, 3vw, 6rem);
       line-height: calc(5vw + 50px);
       letter-spacing: 0.05em;
       color: var(--gold);
@@ -69,7 +69,11 @@ body{
       width: 100vw;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: .5em;
+      #roundExplanation{
+        width: 90%;
+      }
       #roundExplanation::first-letter{
         text-transform: capitalize;
       }
@@ -86,7 +90,7 @@ body{
         width: 200px;
         min-height: 150px;
         h5{
-          font-size: 5em;
+          font-size: clamp(3rem, 5vw, 5rem);
         }
         p{
           font-size: 1.2rem;
@@ -101,15 +105,15 @@ body{
       width: 100vw;
       display: flex;
       justify-content: center;
-      gap: 2em;
+      gap: clamp(1em, 5vw, 2em);
       justify-self: end;
       button{
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: clamp(4rem, 5vw, 4.5rem);
-        width: 150px;
-        height: 150px;
+        font-size: clamp(3rem, 10vw, 5rem);
+        width: clamp(100px, 20vw, 150px);
+        height: clamp(100px, 20vw, 150px);
         background-color: var(--dark-blue);
         border-radius: 5px;
         &:hover{
